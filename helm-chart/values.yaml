@@ -1,0 +1,38 @@
+deployment:
+  name: monkey-deployment
+
+serviceAccount:
+  name: monkey
+
+service:
+  name: monkey-svc
+  type: NodePort
+  port: 5000
+  targetPort: 5000
+  nodePort: 30007
+
+pod:
+  name: monkey-island
+  labels:
+    app: monkey
+  containers:
+    - name: monkey-island
+      image: artifactory.f5net.com/dockerhub-remote/infectionmonkey/monkey-island:latest
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 5000
+    - name: monkey-mongo
+      image: artifactory.f5net.com/dockerhub-remote/mongo:6.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /data/db
+          name: monkey-data
+  volumes:
+    - name: monkey-data
+      hostPath:
+        path: /var/monkey-mongo/data/db
+
+clusterRoleBinding:
+  name: monkey-bind
+  roleRef:
+    name: cluster-admin
