@@ -17,12 +17,12 @@ pod:
     app: monkey
   containers:
     - name: monkey-island
-      image: artifactory.f5net.com/dockerhub-remote/infectionmonkey/monkey-island:latest
+      image: infectionmonkey/monkey-island:latest
       imagePullPolicy: IfNotPresent
       ports:
         - containerPort: 5000
     - name: monkey-mongo
-      image: artifactory.f5net.com/dockerhub-remote/mongo:6.0
+      image: mongo:6.0
       imagePullPolicy: IfNotPresent
       volumeMounts:
         - mountPath: /data/db
